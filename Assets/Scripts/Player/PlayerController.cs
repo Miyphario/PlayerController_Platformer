@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     private bool _isGrounded;
     private bool _isSprinting;
     private bool _isCrouching;
+    private bool _crouchKeyPressed;
 
     private float _defaultColliderHeight;
 
@@ -114,10 +115,17 @@ public class PlayerController : MonoBehaviour
         // Crouch
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
+            _crouchKeyPressed = true;
             Crouch();
         }
 
         if (Input.GetKeyUp(KeyCode.LeftControl))
+        {
+            _crouchKeyPressed = false;
+            Uncrouch();
+        }
+
+        if (!_crouchKeyPressed)
         {
             Uncrouch();
         }
@@ -286,6 +294,12 @@ public class PlayerController : MonoBehaviour
 
     private void Uncrouch()
     {
+        if (!_isCrouching) return;
+
+        Vector3 castPos = _collider.height * Vector3.up + transform.position;
+        float maxDistance = _defaultColliderHeight - _crouchColliderHeight;
+        if (Physics.Raycast(castPos, Vector3.up, maxDistance, _groundMask)) return;
+
         _isCrouching = false;
         _collider.height = _defaultColliderHeight;
         _collider.center = new Vector3(_collider.center.x, _collider.height / 2f, _collider.center.z);
