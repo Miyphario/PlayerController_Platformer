@@ -1,0 +1,108 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d37060c46149efe46a2932c8c64ce4ef, type: 3}
+  m_Name: RCCP_DemoMaterials
+  m_EditorClassIdentifier: 
+  instanceId: 0
+  demoMaterials:
+  - material: {fileID: 2100000, guid: 2da2d5bf727164540b0f7cfbce04da99, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: 11fb1bca04134694ca9d46299167a9d4, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: b4f448f732bfcc24e936f67adb20e3d3, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: d6217dd30bb2bfb49b8a2cafb3d3d5d2, type: 2}
+    defaultShader: Legacy Shaders/Particles/Alpha Blended
+  - material: {fileID: 2100000, guid: 93d316e0abb38454a981019f239de0a8, type: 2}
+    defaultShader: Skybox/Procedural
+  - material: {fileID: 2100000, guid: c66722ed7c536c044bbac11705d7a82f, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: c3eac15073d5a0c418a0d9e05538bc4d, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: 8a7a6c32a5e60ee469e39cd7d9add892, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: a28c530224c386241a124f7c99f1d796, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: 443c0a0960afad44787027e5b29c809b, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: cea352fbf9c9f794fb091855ad027f64, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: 461b9208aa93822459cc1a32d2181c45, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: 0d18bbfdf3b17ab48a217355c0ad3efa, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: e58faf9e6ec11464b9251e411768f469, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: 6f257ed7e23b5e0428a344df57d22e2e, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: cd3ef5ae685fb9c42a2c8d8d4b54d429, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: 78742fc082cbe99458819781286133c6, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: cd22c97d54ec0c848b54e9ff6242d2c3, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: 5e80a95008a9dac4f9e0c31f14e0a9ac, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: a4a305635b78ba940bbe12fd4c4787b8, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: 878ed3beebfd0d642a3e2adcd96e65c7, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: 1613431c7fde5ad40a05792c698d8c29, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: 064bdae9944a42f4ebfb4c8fd82c5e6f, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: c33f5f66b1ca3064b967c74176c7c8d0, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: 5a40b3574450ec846870443265930e87, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: 0773cb5d300633b4caf015688b61e8b1, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: de8f4599da7b0564c99cc3fda8dd16e4, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: cfb4da4001c18ce4187b6c1865e43e6c, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: b509177903dd2ca4faba59396a4b3679, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: bcc7350d20fe5834baaf598419b1825f, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: 5be519b38386fc0439b94b52d5f5694c, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: ad494a832b6628040b431db94494d77c, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: d4482ab5af095f7448a7bf8f9025ace8, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: 4abeeeeda2959034a91a53b48e8d8511, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: 2235c43eb12c5484ca4f67b2bec232b8, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: a226714758e5e0141b1f2f17afb0c2ff, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: 8cc1c3f9751516d42aa9e480a1dadf06, type: 2}
+    defaultShader: Standard
+  - material: {fileID: 2100000, guid: e94bb65c828479c4787a7c25296a0648, type: 2}
+    defaultShader: Standard
+  vehicleBodyMaterials:
+  - {fileID: 2100000, guid: 2b527868554550948a4a5fa57800c8e9, type: 2}
+  wheelBlurMaterials:
+  - {fileID: 2100000, guid: 350605a46eb40364fa6d2d54c8af95c5, type: 2}
+  - {fileID: 2100000, guid: 27fde7aa57930da4b8c542ae9085ea3c, type: 2}
+  - {fileID: 2100000, guid: c04f6fd21533eb547aee979c3b442bc3, type: 2}
+  - {fileID: 2100000, guid: 0cd94cd46bf8c5f4998385141861a4e9, type: 2}
+  - {fileID: 2100000, guid: b6b88cd9f72f6124690d85fa3a298c1f, type: 2}
+  - {fileID: 2100000, guid: f60950ee96db03649b800eb7c296ce27, type: 2}
+  - {fileID: 2100000, guid: 7ab79186d7b47064cb4bccfc18c99915, type: 2}
+  - {fileID: 2100000, guid: fe036a66ed0e15b4fbd77bc70859ed9d, type: 2}
+  - {fileID: 2100000, guid: e1faf61a376b7ff4585a2965573406f9, type: 2}
+  - {fileID: 2100000, guid: 0cdce2f49a5e47c48822b6a121604d4d, type: 2}
+  - {fileID: 2100000, guid: 2aa0ca0e81d132e45967779d5b3f6ebd, type: 2}
+  - {fileID: 2100000, guid: 4284d164ad9f472439a6baf98b4289a6, type: 2}
+  - {fileID: 2100000, guid: 4d77001c15c92ab42897ffac571c4806, type: 2}
