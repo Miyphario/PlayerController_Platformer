@@ -1,18 +1,27 @@
-using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider))]
 public class PlayerController : MonoBehaviour
 {
+    [Header("Speed")]
     [SerializeField] private float _walkSpeed = 5f;
     [SerializeField] private float _sprintSpeed = 7f;
+    [SerializeField] private float _crouchSpeed = 3f;
+    [SerializeField] private float _rotationSpeed = 700f;
+    [Header("Jump")]
     [SerializeField] private float _jumpStrength = 10f;
     [SerializeField] private float _wallJumpStrength = 14f;
-    [SerializeField] private float _rotationSpeed = 700f;
     [SerializeField] private LayerMask _groundMask;
+    [Header("Other")]
+    [SerializeField] private float _crouchColliderHeight = 1.4f;
+    [SerializeField] private Transform _model;
 
     private bool _isGrounded;
     private bool _isSprinting;
+    private bool _isCrouching;
+    private bool _crouchKeyPressed;
+
+    private float _defaultColliderHeight;
 
     private MovementType _movementType;
     private Vector3 _moveDirection;
@@ -54,10 +63,12 @@ public class PlayerController : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _collider = GetComponent<CapsuleCollider>();
+        _defaultColliderHeight = _collider.height;
     }
 
     private void InputUpdate()
     {
+        // Movement
         switch (_movementType)
         {
             case MovementType.OnGround:
@@ -72,6 +83,7 @@ public class PlayerController : MonoBehaviour
                 break;
         }
 
+        // Jump && Fly
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (_timeToFly > 0f)
@@ -87,13 +99,35 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Input.GetKey(KeyCode.LeftShift))
+        // Sprint
+        if (!_isCrouching)
         {
-            _isSprinting = true;
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                _isSprinting = true;
+            }
+            else
+            {
+                _isSprinting = false;
+            }
         }
-        else
+
+        // Crouch
+        if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-            _isSprinting = false;
+            _crouchKeyPressed = true;
+            Crouch();
+        }
+
+        if (Input.GetKeyUp(KeyCode.LeftControl))
+        {
+            _crouchKeyPressed = false;
+            Uncrouch();
+        }
+
+        if (!_crouchKeyPressed)
+        {
+            Uncrouch();
         }
     }
 
@@ -129,7 +163,9 @@ public class PlayerController : MonoBehaviour
     private void MoveFixedUpdate()
     {
         float currentSpeed;
-        if (_isSprinting)
+        if (_isCrouching)
+            currentSpeed = _crouchSpeed;
+        else if (_isSprinting)
             currentSpeed = _sprintSpeed;
         else
             currentSpeed = _walkSpeed;
@@ -242,6 +278,34 @@ public class PlayerController : MonoBehaviour
         }
 
         _onWall = false;
+    }
+
+    private void Crouch()
+    {
+        _isCrouching = true;
+        _isSprinting = false;
+
+        _collider.height = _crouchColliderHeight;
+        _collider.center = new Vector3(_collider.center.x, _collider.height / 2f, _collider.center.z);
+
+        // Animation here
+        _model.localScale = new Vector3(_model.localScale.x, _collider.center.y, _model.localScale.z);
+    }
+
+    private void Uncrouch()
+    {
+        if (!_isCrouching) return;
+
+        Vector3 castPos = _collider.height * Vector3.up + transform.position;
+        float maxDistance = _defaultColliderHeight - _crouchColliderHeight;
+        if (Physics.Raycast(castPos, Vector3.up, maxDistance, _groundMask)) return;
+
+        _isCrouching = false;
+        _collider.height = _defaultColliderHeight;
+        _collider.center = new Vector3(_collider.center.x, _collider.height / 2f, _collider.center.z);
+
+        // Animation here
+        _model.localScale = new Vector3(_model.localScale.x, _collider.center.y, _model.localScale.z);
     }
 
     private void OnDrawGizmosSelected()
