@@ -878,12 +878,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _walkSpeed: 5
   _sprintSpeed: 8
+  _crouchSpeed: 3
+  _rotationSpeed: 1000
   _jumpStrength: 11
   _wallJumpStrength: 14
-  _rotationSpeed: 1000
   _groundMask:
     serializedVersion: 2
     m_Bits: 1
+  _crouchColliderHeight: 1.4
+  _model: {fileID: 379191169}
 --- !u!136 &578497760
 CapsuleCollider:
   m_ObjectHideFlags: 0
