@@ -3,52 +3,59 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("Speed")]
+    [Header("Walk")]
     [SerializeField] private float _walkSpeed = 5f;
     [SerializeField] private float _sprintSpeed = 7f;
-    [SerializeField] private float _crouchSpeed = 3f;
+
+    [Header("Rotation")]
     [SerializeField] private float _rotationSpeed = 700f;
+    [SerializeField] private float _faceRightRotation = 0f;
+    [SerializeField] private float _faceLeftRotation = 180f;
+
+    [Header("Crouch")]
+    [SerializeField] private float _crouchColliderHeight = 1.4f;
+    [SerializeField] private float _crouchSpeed = 3f;
+
     [Header("Jump")]
+    [SerializeField] private LayerMask _groundMask;
     [SerializeField] private float _jumpStrength = 10f;
     [SerializeField] private float _wallJumpStrength = 14f;
-    [SerializeField] private LayerMask _groundMask;
+
     [Header("Other")]
-    [SerializeField] private float _crouchColliderHeight = 1.4f;
     [SerializeField] private Transform _model;
 
     private bool _isGrounded;
     private bool _isSprinting;
     private bool _isCrouching;
+    private bool _isJumping;
     private bool _crouchKeyPressed;
 
     private float _defaultColliderHeight;
-
-    private MovementType _movementType;
     private Vector3 _moveDirection;
     private bool _faceRight = true;
-    private float _maxTimeToFly = 0.2f;
-    private float _timeToFly;
 
     private bool _onWall;
-    private float _maxOnWallTime = 0.35f;
     private float _onWallTime;
+    private float _maxOnWallTime = 0.35f;
 
-    private CapsuleCollider _collider;
     private Rigidbody _rb;
+    private CapsuleCollider _collider;
 
-    private Collider[] _overlapGround = new Collider[1];
     private float _groundCheckRadius = 0.2f;
+    private Collider[] _overlapGround = new Collider[1];
 
     private void Awake()
     {
-        InitComponents();
+        _rb = GetComponent<Rigidbody>();
+        _collider = GetComponent<CapsuleCollider>();
+
+        _defaultColliderHeight = _collider.height;
     }
 
     private void Update()
     {
         CheckGroundUpdate();
         InputUpdate();
-        FlyTimeUpdate();
         RotationUpdate();
         CheckWallUpdate();
         WallTimeUpdate();
@@ -57,46 +64,19 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         MoveFixedUpdate();
-    }
-
-    private void InitComponents()
-    {
-        _rb = GetComponent<Rigidbody>();
-        _collider = GetComponent<CapsuleCollider>();
-        _defaultColliderHeight = _collider.height;
+        JumpFixedUpdate();
     }
 
     private void InputUpdate()
     {
         // Movement
-        switch (_movementType)
-        {
-            case MovementType.OnGround:
-                if (_onWallTime <= 0f)
-                    _moveDirection = new(Input.GetAxisRaw("Horizontal"), 0f, 0f);
-                break;
+        if (_onWallTime <= 0f)
+            _moveDirection = new(Input.GetAxisRaw("Horizontal"), 0f, 0f);
 
-            case MovementType.Flight:
-                Vector3 flyDirection = new(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0f);
-                flyDirection.Normalize();
-                _moveDirection = flyDirection;
-                break;
-        }
-
-        // Jump && Fly
+        // Jump
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (_timeToFly > 0f)
-            {
-                SwitchMovement();
-            }
-            else
-            {
-                if (_movementType == MovementType.OnGround)
-                    Jump();
-
-                _timeToFly = _maxTimeToFly;
-            }
+            _isJumping = true;
         }
 
         // Sprint
@@ -139,12 +119,12 @@ public class PlayerController : MonoBehaviour
 
         if (_moveDirection.x < 0f)
         {
-            rotation.y = 180f;
+            rotation.y = _faceLeftRotation;
             _faceRight = false;
         }
         else
         {
-            rotation.y = 0f;
+            rotation.y = _faceRightRotation;
             _faceRight = true;
         }
 
@@ -170,35 +150,26 @@ public class PlayerController : MonoBehaviour
         else
             currentSpeed = _walkSpeed;
 
-        switch (_movementType)
+        Vector3 velocity = _rb.velocity;
+        if (_onWallTime <= 0f)
         {
-            case MovementType.OnGround:
-                Vector3 velocity = _rb.velocity;
-                if (_onWallTime <= 0f)
+            velocity = new(_moveDirection.x * currentSpeed, _rb.velocity.y, _rb.velocity.z);
+
+            if (_moveDirection != Vector3.zero)
+            {
+                if (_onWall)
                 {
-                    velocity = new(_moveDirection.x * currentSpeed, _rb.velocity.y, _rb.velocity.z);
-
-                    if (_moveDirection != Vector3.zero)
-                    {
-                        if (_onWall)
-                        {
-                            velocity.y = -1f;
-                        }
-                    }
+                    velocity.y = -1f;
                 }
-
-                _rb.velocity = velocity;
-                break;
-
-            case MovementType.Flight:
-                _rb.velocity = _moveDirection * currentSpeed;
-                break;
+            }
         }
+
+        _rb.velocity = velocity;
     }
 
-    private void Jump()
+    private void JumpFixedUpdate()
     {
-        if (_movementType != MovementType.OnGround) return;
+        if (!_isJumping) return;
 
         Vector3 forceVelocity;
         if (_onWall)
@@ -222,31 +193,17 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (!_isGrounded) return;
+            if (!_isGrounded)
+            {
+                _isJumping = false;
+                return;
+            }
+
             forceVelocity = transform.up * _jumpStrength;
         }
 
         _rb.AddForce(forceVelocity, ForceMode.Impulse);
-    }
-
-    private void SwitchMovement()
-    {
-        if (_movementType == MovementType.OnGround)
-        {
-            _movementType = MovementType.Flight;
-            _rb.useGravity = false;
-        }
-        else
-        {
-            _movementType = MovementType.OnGround;
-            _rb.useGravity = true;
-        }
-    }
-
-    private void FlyTimeUpdate()
-    {
-        if (_timeToFly <= 0f) return;
-        _timeToFly -= Time.deltaTime;
+        _isJumping = false;
     }
 
     private void WallTimeUpdate()
@@ -257,7 +214,7 @@ public class PlayerController : MonoBehaviour
 
     private void CheckWallUpdate()
     {
-        if (_movementType != MovementType.OnGround || _isGrounded)
+        if (_isGrounded)
         {
             _onWall = false;
             return;

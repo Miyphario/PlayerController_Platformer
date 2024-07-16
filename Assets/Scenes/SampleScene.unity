@@ -1229,16 +1229,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c28c06aff5f9b444a9bea11b3590a538, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _walkSpeed: 5
-  _sprintSpeed: 8
-  _crouchSpeed: 3
+  _walkSpeed: 8
+  _sprintSpeed: 14
   _rotationSpeed: 1000
-  _jumpStrength: 11
-  _wallJumpStrength: 14
+  _faceRightRotation: 0
+  _faceLeftRotation: 180
+  _crouchColliderHeight: 1.4
+  _crouchSpeed: 6
   _groundMask:
     serializedVersion: 2
     m_Bits: 1
-  _crouchColliderHeight: 1.4
+  _jumpStrength: 20
+  _wallJumpStrength: 17
   _model: {fileID: 379191169}
 --- !u!136 &578497760
 CapsuleCollider:
